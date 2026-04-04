@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  // 定义所有分类
+  const publications = ['tech', 'life', 'essay'];
+  return publications.map((publication) => ({
+    params: { name: publication },
+    props: { publication },
+  }));
+}
+
+const { publication } = Astro.props;
+const allPosts = await getCollection('blog');
+const publicationPosts = allPosts;
+---
+
+<Layout title={`${publication} - 分类`}>
+  <h1 style="margin-bottom: 1.5rem;">分类：{publication}</h1>
+  {publicationPosts.length === 0 ? (
+    <p>暂无文章</p>
+  ) : (
+    publicationPosts.map((post) => (
+      <a href={`/posts/${post.id.replace(/\.md$/, '')}`} class="post-card">
+        <h2>{post.data.title}</h2>
+        <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
+        {post.data.description && <p>{post.data.description}</p>}
+      </a>
+    ))
+  )}
+</Layout>

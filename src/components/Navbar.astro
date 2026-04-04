@@ -1,0 +1,261 @@
+---
+import { Astronav, MenuItems, MenuIcon, Dropdown, DropdownItems } from 'astro-navbar';
+
+// 导航链接配置
+const navLinks = [
+  { name: '首页', href: '/' },
+  { name: '关于', href: '/about' },
+  {
+    name: '分类',
+    href: '#',
+    isDropdown: true,
+    dropdownItems: [
+      { name: '技术', href: '/publication/tech' },
+      { name: '生活', href: '/publication/life' },
+      { name: '随笔', href: '/publication/essay' },
+    ],
+  },
+];
+---
+
+<header class="navbar">
+  <Astronav closeOnClick>
+    <div class="navbar-container">
+      <!-- Logo -->
+      <a href="/" class="logo">
+        <span class="logo-text">📝 MyBlog</span>
+      </a>
+
+      <!-- 移动端菜单按钮 -->
+      <div class="mobile-menu-btn">
+        <MenuIcon class="menu-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-open">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-close">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </MenuIcon>
+      </div>
+
+      <!-- 导航菜单 -->
+      <MenuItems class="nav-menu">
+        <ul class="nav-list">
+          {navLinks.map((link) => (
+            <li>
+              {link.isDropdown ? (
+                <Dropdown class="dropdown">
+                  <button class="dropdown-trigger">
+                    <span>{link.name}</span>
+                    <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </button>
+                  <DropdownItems class="dropdown-menu">
+                    <div class="dropdown-wrapper">
+                      <ul>
+                        {link.dropdownItems?.map((item) => (
+                          <li><a href={item.href}>{item.name}</a></li>
+                        ))}
+                      </ul>
+                    </div>
+                  </DropdownItems>
+                </Dropdown>
+              ) : (
+                <a href={link.href} class="nav-link">{link.name}</a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </MenuItems>
+    </div>
+  </Astronav>
+</header>
+
+<style is:global>
+  /* 注意：astro-navbar 需要 .hidden 类 */
+  .hidden {
+    display: none;
+  }
+</style>
+
+<style>
+  .navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  .navbar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Logo 样式 */
+  .logo {
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .logo-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* 移动端菜单按钮 */
+  .mobile-menu-btn {
+    display: none;
+  }
+
+  .menu-icon {
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+  }
+
+  .icon-open, .icon-close {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 导航菜单 */
+  .nav-menu {
+    display: flex;
+  }
+
+  .nav-list {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: #4a5568;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover {
+    color: #667eea;
+  }
+
+  /* 下拉菜单样式 */
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4a5568;
+    padding: 0;
+  }
+
+  .dropdown-trigger:hover {
+    color: #667eea;
+  }
+
+  .dropdown-arrow {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s;
+  }
+
+  .dropdown[open] .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    min-width: 160px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .dropdown-wrapper ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  .dropdown-wrapper li a {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #4a5568;
+    transition: background 0.2s;
+  }
+
+  .dropdown-wrapper li a:hover {
+    background-color: #f7fafc;
+    color: #667eea;
+  }
+
+  /* 响应式：移动端 */
+  @media (max-width: 768px) {
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .nav-menu {
+      position: fixed;
+      top: 57px;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-top: 1px solid #eaeaea;
+      transition: transform 0.3s ease;
+    }
+
+    /* astro-navbar 会自动添加 .hidden 类来控制显示/隐藏 */
+    .nav-menu.hidden {
+      display: none;
+    }
+
+    .nav-list {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .dropdown-menu {
+      position: static;
+      box-shadow: none;
+      padding-left: 1rem;
+      margin-top: 0.25rem;
+    }
+
+    .dropdown-wrapper ul {
+      padding: 0;
+    }
+  }
+</style>

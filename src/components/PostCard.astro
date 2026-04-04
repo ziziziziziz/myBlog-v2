@@ -1,0 +1,36 @@
+---
+// 文章卡片组件
+export interface Props {
+  title: string;
+  date: string;
+  description?: string;
+  slug: string;
+}
+
+const { title, date, description, slug } = Astro.props;
+---
+
+<div class="post-card">
+  <h2><a href={`/posts/${slug}`}>{title}</a></h2>
+  <p>
+    {new Date(date).toLocaleDateString('zh-CN')}
+  </p>
+  {description && (
+    <p>{description}</p>
+  )}
+</div>
+
+<style>
+/* 文章卡片 */
+.post-card {
+  border-radius: 12px;
+  background-color: white;
+  /* padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
+}
+
+/* .post-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+} */
+</style>
