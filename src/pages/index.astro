@@ -1,32 +1,42 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PostCard from '../components/PostCard.astro';
+import PostCard from '../components/timelinePost.astro';
 import { getCollection } from 'astro:content';
 
 // 获取所有文章
-const posts = await getCollection('blog');
+let posts = await getCollection('blog');
 // 按日期排序
 posts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
+// 只取前5条
+posts = posts.slice(0, 5);
 ---
 
-<Layout title="我的博客 | 首页" description="个人博客，记录生活与技术">
+<Layout title="qlz的小空间" description="个人博客，记录生活与技术">
   <div class="page">
-    <div id="home-top"></div>
+    <div id="home-top">
+      <p>qlz的博客2，建设中...</p>
+    </div>
 
     <main class="container">
       <div id="hello">
         <p>欢迎来到qlz的小空间</p>
       </div>
+
       <hr />
+
       <div id="recent-updates">
-        {posts.map((post: any) => (
-          <PostCard
-            title={post.data.title}
-            date={post.data.date.toISOString().split('T')[0]}
-            description={post.data.description}
-            slug={post.id}
-          />
-        ))}
+        <h2>近期动态</h2>
+        <div id="updates-cont" class="timeline">
+          {posts.map((post: any) => (
+            <PostCard
+              title={post.data.title}
+              date={post.data.date.toISOString().split('T')[0]}
+              description={post.data.description}
+              slug={post.id}
+            />
+          ))}
+        </div>
+        <a id="to-updates" href="/publication">查看更多 →</a>
       </div>
     </main>
   </div>
@@ -35,11 +45,51 @@ posts.sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime());
 <style>
   #home-top {
     height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   #recent-updates {
     display: flex;
     flex-direction: column;
+    gap: 15px;
+  }
+/* 把文章卡片修美一点、、、、、、、、、、、、、、、、、、、、、、 */
+  #updates-cont {
+    display: flex;
+    flex-direction: column;
     gap: 25px;
+    max-height: 55vh;
+    overflow: hidden;
+    /* 使用 mask 实现渐变消失 */
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+
+  /* 时间轴容器 */
+  .timeline {
+      position: relative;
+      padding-left: 45px;
+      height: 100%;
+  }
+
+  /* 时间轴主线（左侧竖线） */
+  .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 30px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, 
+          #e0e7ef 0%, 
+          #e0e7ef 95%,
+          transparent 100%);
+  }
+
+  #to-updates {
+    margin: 0 20px 0 auto;
+    color: var(--theme-color);
   }
 </style>

@@ -1,0 +1,112 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// 获取所有博客文章
+const allPosts = await getCollection('blog');
+
+// 按日期排序（最新的在前）
+const posts = allPosts.sort((a, b) => 
+  b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<Layout title="文柜 | qlz" description="所有文章列表">
+  <div class="publication-header">
+    <h1>📖 文柜</h1>
+    <p class="publication-desc">共 {posts.length} 篇文章</p>
+  </div>
+
+  {posts.length === 0 ? (
+    <p class="empty-msg">暂无文章，敬请期待~</p>
+  ) : (
+    <div class="posts-list">
+      {posts.map((post) => {
+        const slug = post.id.replace(/\.md$/, '');
+        return (
+          <article class="container">
+            <div class="post-info">
+              <a href={`/posts/${slug}`} class="post-link">
+                  <h2 class="post-title">{post.data.title}</h2>
+              </a><br />
+              <time class="post-date">
+                {post.data.date.toLocaleDateString('zh-CN', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </time>
+              {post.data.description && (
+                <p class="post-desc">{post.data.description}</p>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  )}
+</Layout>
+
+<style>
+  .publication-header {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .publication-header h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .publication-desc {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .empty-msg {
+    text-align: center;
+    color: #6c757d;
+    padding: 3rem 0;
+  }
+
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: 0 auto;
+  }
+
+  .post-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: box-shadow 0.2s;
+    border: 1px solid #eaeaea;
+  }
+
+  .post-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .post-title {
+    display: inline-block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-date {
+    font-size: 0.85rem;
+    color: #6c757d;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-desc {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+  }
+</style>

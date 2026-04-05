@@ -1,0 +1,51 @@
+---
+// 文章卡片组件
+export interface Props {
+  title: string;
+  date: string;
+  description?: string;
+  slug: string;
+}
+
+const { title, date, description, slug } = Astro.props;
+---
+
+<div class="post-card">
+  <p>
+    {new Date(date).toLocaleDateString('zh-CN')}
+  </p>
+  <a href={`/posts/${slug}`}><h3 class="post-title">{title}</h3></a>
+  {description && (
+    <p>{description}</p>
+  )}
+</div>
+
+<style>
+/* 文章卡片 */
+/* .post-card {
+} */
+
+/* 时间轴节点（左侧圆点） */
+.post-card::before {
+    content: '';
+    position: relative;
+    left: -37px;
+    top: 24px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--theme-color);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px rgba(41,157,128,0.2);
+    z-index: 2;
+}
+
+/* .post-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+} */
+
+  .post-title {
+    display: inline-block;
+  }
+</style>

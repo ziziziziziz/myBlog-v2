@@ -10,7 +10,7 @@ const { title, date } = Astro.props;
 ---
 
 <Layout title={title}>
-  <article>
+  <div class="container" id="post-cont">
     <h1>{title}</h1>
     <time>
       {new Date(date).toLocaleDateString('zh-CN')}
@@ -18,10 +18,14 @@ const { title, date } = Astro.props;
     <div class="content">
       <slot />
     </div>
-  </article>
+  </div>
 </Layout>
 
 <style>
+  #post-cont {
+    padding: 30px 90px;
+  }
+
   .content :is(h2, h3) {
     margin: 1.5rem 0 0.5rem;
   }
