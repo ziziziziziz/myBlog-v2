@@ -13,15 +13,19 @@ const { title, date } = Astro.props;
   <div class="container" id="post-cont">
     <h1>{title}</h1>
     <time>
-      {new Date(date).toLocaleDateString('zh-CN')}
+      {new Date(date).toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })}
     </time>
-    <div class="content">
+    <div class="content prose">
       <slot />
     </div>
   </div>
 </Layout>
 
-<style>
+<style is:global>
   #post-cont {
     padding: 30px 90px;
   }
@@ -37,5 +41,111 @@ const { title, date } = Astro.props;
     padding: 1rem;
     border-radius: 8px;
     overflow-x: auto;
+  }
+
+  /* 所有针对文章内容的样式都写在这里 */
+  .prose {
+    max-width: 65ch; /* 限制文章宽度，优化阅读体验 */
+    margin: 0 auto;  /* 水平居中 */
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 3;
+    color: #2c3e50;
+  }
+
+  /* 文章内的标题样式 */
+  .prose h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #667eea;
+    padding-left: 1rem;
+  }
+  .prose h2 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #eaecef;
+  }
+
+  /* 文章内的段落样式 */
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+
+  /* 文章内的链接样式 */
+  .prose a {
+    color: #667eea;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .prose a:hover {
+    border-bottom-color: #667eea;
+  }
+
+  /* 文章内的列表样式 */
+  .prose ul, .prose ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+  .prose li {
+    margin: 0.25rem 0;
+  }
+
+  /* 文章内的引用样式 */
+  .prose blockquote {
+    border-left: 4px solid #d1d5db;
+    margin: 1.5rem 0;
+    padding: 0.5rem 1rem;
+    font-style: italic;
+    color: #6b7280;
+    background-color: #f9fafb;
+  }
+
+  /* 文章内的表格样式 */
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .prose th, .prose td {
+    border: 1px solid #e5e7eb;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  .prose th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+  }
+
+  /* 文章内的代码块样式（语法高亮） */
+  .prose pre {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+  }
+  /* 文章内的行内代码样式 */
+  .prose code {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 0.2rem 0.3rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  .prose pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* 图片样式 */
+  .prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 </style>
