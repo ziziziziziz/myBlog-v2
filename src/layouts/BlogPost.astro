@@ -19,7 +19,7 @@ const { title, date } = Astro.props;
         day: 'numeric'
       })}
     </time>
-    <div class="content prose">
+    <div class="prose">
       <slot />
     </div>
   </div>
@@ -30,24 +30,15 @@ const { title, date } = Astro.props;
     padding: 30px 90px;
   }
 
-  .content :is(h2, h3) {
-    margin: 1.5rem 0 0.5rem;
-  }
-  .content p {
-    margin-bottom: 1rem;
-  }
-  .content pre {
-    background: #f4f4f4;
+  .prose pre {
     padding: 1rem;
     border-radius: 8px;
     overflow-x: auto;
+    line-height: 1.5;
   }
 
   /* 所有针对文章内容的样式都写在这里 */
   .prose {
-    max-width: 65ch; /* 限制文章宽度，优化阅读体验 */
-    margin: 0 auto;  /* 水平居中 */
-    font-family: system-ui, -apple-system, sans-serif;
     line-height: 3;
     color: #2c3e50;
   }
@@ -56,49 +47,42 @@ const { title, date } = Astro.props;
   .prose h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid var(--theme-color);
     padding-left: 1rem;
   }
   .prose h2 {
     font-size: 1.5rem;
-    margin: 1.5rem 0 0.75rem;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid #eaecef;
-  }
-
-  /* 文章内的段落样式 */
-  .prose p {
-    margin-bottom: 1.25rem;
+    margin-top: 1.5rem;
   }
 
   /* 文章内的链接样式 */
   .prose a {
-    color: #667eea;
+    color: var(--theme-color);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s;
   }
   .prose a:hover {
-    border-bottom-color: #667eea;
+    border-bottom-color: var(--theme-color);
   }
 
   /* 文章内的列表样式 */
   .prose ul, .prose ol {
-    margin: 1rem 0;
     padding-left: 1.5rem;
   }
   .prose li {
     margin: 0.25rem 0;
   }
+  .prose ul ::marker {
+    color: var(--theme-color);
+  }
 
   /* 文章内的引用样式 */
   .prose blockquote {
-    border-left: 4px solid #d1d5db;
+    border-left: 4px solid var(--theme-color);
     margin: 1.5rem 0;
     padding: 0.5rem 1rem;
-    font-style: italic;
-    color: #6b7280;
-    background-color: #f9fafb;
+    /* font-style: italic; 斜文字体效果*/
   }
 
   /* 文章内的表格样式 */
@@ -118,17 +102,17 @@ const { title, date } = Astro.props;
   }
 
   /* 文章内的代码块样式（语法高亮） */
-  .prose pre {
+  /* .prose pre {
     background-color: #1e293b;
     color: #e2e8f0;
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
     font-size: 0.875rem;
-  }
+  } */
   /* 文章内的行内代码样式 */
   .prose code {
-    background-color: #f1f5f9;
+    background-color: #f5f5e8;
     color: #0f172a;
     padding: 0.2rem 0.3rem;
     border-radius: 0.25rem;
@@ -142,10 +126,10 @@ const { title, date } = Astro.props;
 
   /* 图片样式 */
   .prose img {
-    max-width: 100%;
-    height: auto;
+    max-width: 80%;
     border-radius: 8px;
-    margin: 1rem 0;
+    display: block;
+    margin: 1rem auto;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 </style>
