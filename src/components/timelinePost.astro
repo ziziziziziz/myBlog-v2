@@ -12,7 +12,11 @@ const { title, date, description, slug } = Astro.props;
 
 <div class="post-card">
   <p>
-    {new Date(date).toLocaleDateString('zh-CN')}
+    {new Date(date).toLocaleDateString('zh-CN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })}
   </p>
   <a href={`/posts/${slug}`}><h3 class="post-title">{title}</h3></a>
   {description && (
@@ -22,8 +26,9 @@ const { title, date, description, slug } = Astro.props;
 
 <style>
 /* 文章卡片 */
-/* .post-card {
-} */
+.post-card {
+  margin-right: 4rem;
+}
 
 /* 时间轴节点（左侧圆点） */
 .post-card::before {
@@ -41,11 +46,7 @@ const { title, date, description, slug } = Astro.props;
     z-index: 2;
 }
 
-/* .post-card:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-} */
-
-  .post-title {
-    display: inline-block;
-  }
+.post-title {
+  display: inline-block;
+}
 </style>

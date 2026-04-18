@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PostCard from '../components/timelinePost.astro';
+import TimelinePost from '@components/TimelinePost.astro';
 import { getCollection } from 'astro:content';
 
 // 获取所有文章
@@ -28,7 +28,7 @@ posts = posts.slice(0, 5);
         <h2>近期动态</h2>
         <div id="updates-cont" class="timeline">
           {posts.map((post: any) => (
-            <PostCard
+            <TimelinePost
               title={post.data.title}
               date={post.data.date.toISOString().split('T')[0]}
               description={post.data.description}
